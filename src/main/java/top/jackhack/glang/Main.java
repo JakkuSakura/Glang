@@ -10,8 +10,6 @@ public class Main {
         System.out.println(new String(preProcessor.getSource()));
         preProcessor.splitWords();
         System.out.println(preProcessor.getRootElement().childs);
-        preProcessor.parseElement();
-        System.out.println(preProcessor.getRootElement().childs);
         preProcessor.sentenceSplit();
         System.out.println(preProcessor.getRootElement().childs);
     }

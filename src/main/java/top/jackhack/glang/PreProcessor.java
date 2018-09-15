@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.regex.MatchResult;
 
 public class PreProcessor {
     private char[] source;
@@ -46,7 +47,6 @@ public class PreProcessor {
 
     public void strip() throws CannotMatchException {
         int p1 = 0;
-        char last = 0;
         int row = 1;
         int col = 1;
         while (p1 < source.length) {
@@ -54,7 +54,7 @@ public class PreProcessor {
             if (SourceChar.isPrint(ch)) {
                 rootElement.childs.add(new SourceChar().setChar(ch).setRow(row).setCol(col));
             }
-            else if (Character.isWhitespace(ch) && !Character.isWhitespace(last))
+            else if (Character.isWhitespace(ch))
             {
                 rootElement.childs.add(new SpaceChar().setRow(row).setCol(col));
             }
@@ -68,7 +68,6 @@ public class PreProcessor {
             }
 
             ++col;
-            last = ch;
         }
 
 
@@ -83,26 +82,43 @@ public class PreProcessor {
         }
     }
 
+    public void processBrackets() {
+
+    }
+
+    private static Collection<Class<? extends Element>> SPLIT_WORDS_ELEMENTS = new ArrayList<>();
+    static
+    {
+        SPLIT_WORDS_ELEMENTS.add(Type.class);
+        SPLIT_WORDS_ELEMENTS.add(Identifier.class);
+        SPLIT_WORDS_ELEMENTS.add(ConstInteger.class);
+        SPLIT_WORDS_ELEMENTS.add(SentenceEnding.class);
+        SPLIT_WORDS_ELEMENTS.add(Operator.class);
+    }
+
     public void splitWords() throws CannotMatchException {
-        process(Collections.singletonList(SourceString.class));
-    }
+        for (int i = 0; i < rootElement.childs.size(); ++i) {
+            while (i < rootElement.childs.size() && rootElement.childs.get(i) instanceof SpaceChar)
+            {
+                rootElement.childs.remove(i);
+            }
+            if (i < rootElement.childs.size())
+            {
+                MatchResult matchResult = match(SPLIT_WORDS_ELEMENTS, rootElement.childs, i);
+                Collection<Element> matched = rootElement.childs.subList(i, i + matchResult.length);
+                rootElement.childs.removeAll(matched);
+                rootElement.childs.add(i, matchResult.element);
 
-    private static Collection<Class<? extends Element>> PARSE_ELEMENT = new ArrayList<>();
-    static{
-        PARSE_ELEMENT.add(SentenceEnding.class);
-        PARSE_ELEMENT.add(Type.class);
-        PARSE_ELEMENT.add(Operator.class);
-        PARSE_ELEMENT.add(Identifier.class);
-        PARSE_ELEMENT.add(ConstInteger.class);
-
-    }
-
-    public void parseElement() throws CannotMatchException {
-        process(PARSE_ELEMENT);
+            }
+        }
     }
 
     public void sentenceSplit() throws CannotMatchException{
         process(Collections.singletonList(Sentence.class));
+    }
+
+    public void buildTree() {
+
     }
 
 

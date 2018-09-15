@@ -5,8 +5,10 @@ import java.util.ArrayList;
 public class SentenceEnding extends Element {
     @Override
     public int tryMatch(ArrayList<Element> elements, int index) {
-        if (elements.get(index) instanceof SourceString && ((SourceString) elements.get(index)).getString().equals(";"))
+        final Element e = elements.get(index);
+        if (e instanceof SourceChar && ((SourceChar) e).getChar() == ';')
         {
+            copyPosition(e);
             return 1;
         }
         return 0;

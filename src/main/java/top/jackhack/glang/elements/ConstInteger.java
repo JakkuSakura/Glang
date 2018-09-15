@@ -2,16 +2,20 @@ package top.jackhack.glang.elements;
 
 import java.util.ArrayList;
 
-public class ConstInteger extends Element
-{
+public class ConstInteger extends Element {
     public int i;
 
     @Override
     public int tryMatch(ArrayList<Element> elements, int index) {
-        final Element e = elements.get(index);
-        if (e instanceof SourceString) {
-            i = Integer.parseInt(((SourceString) e).getString());
-            return 1;
+        Element e;
+        StringBuilder sb = new StringBuilder();
+        while (index < elements.size() && (e = elements.get(index)) instanceof SourceChar && ((SourceChar) e).getType() == SourceCharType.NUMBER) {
+            sb.append(((SourceChar) e).getChar());
+            ++index;
+        }
+        if (sb.length() > 0) {
+            i = Integer.parseInt(sb.toString());
+            return sb.length();
         }
         return 0;
     }
