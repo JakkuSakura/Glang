@@ -12,22 +12,9 @@ public class SignalSet {
             "goto", "if", "int", "int64", "int16", "return", "in",
             "static", "struct", "switch", "unsigned", "while"
     };
-    public static String[] OPERATORS = new String[]{
-            "+", "-", "*", "/", "<", "<=", ">", ">=", "=", "==",
-            "!=", ";", "(", ")", "^", ",", "\"", "\'", "#", "&",
-            "&&", "|", "||", "%", "~", "<<", ">>", "[", "]", "{",
-            "}", "\\", ".", "?", ":", "!"
-    };
-    public static String SIGNALS = "+-*/\\[],.<>?=_)(&^%$#@!~`:;";
+
+    public static String SIGNALS = "+-*/\\[],.<>?=_)(&^%$#@!~`:;{}";
     public static boolean isSignal(char b) {
         return SIGNALS.indexOf(b) != -1;
-    }
-    public static boolean isOperator(String str) {
-        for (String e : OPERATORS) {
-            if (e.equals(str)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

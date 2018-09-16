@@ -3,7 +3,16 @@ package top.jackhack.glang.elements;
 import java.util.ArrayList;
 
 public class ConstInteger extends Element {
-    public int i;
+    private int val;
+
+    public ConstInteger setVal(int i) {
+        this.val = i;
+        return this;
+    }
+
+    public int getVal() {
+        return val;
+    }
 
     @Override
     public int tryMatch(ArrayList<Element> elements, int index) {
@@ -14,7 +23,7 @@ public class ConstInteger extends Element {
             ++index;
         }
         if (sb.length() > 0) {
-            i = Integer.parseInt(sb.toString());
+            val = Integer.parseInt(sb.toString());
             return sb.length();
         }
         return 0;
@@ -22,6 +31,6 @@ public class ConstInteger extends Element {
 
     @Override
     public String toString() {
-        return String.valueOf(i);
+        return String.valueOf(val);
     }
 }

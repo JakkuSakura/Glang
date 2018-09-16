@@ -2,7 +2,7 @@ package top.jackhack.glang.elements;
 
 import java.util.ArrayList;
 
-public class SentenceEnding extends Element {
+public class StatementEnding extends Element {
     @Override
     public int tryMatch(ArrayList<Element> elements, int index) {
         final Element e = elements.get(index);

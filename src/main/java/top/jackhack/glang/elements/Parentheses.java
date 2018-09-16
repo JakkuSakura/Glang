@@ -1,10 +1,14 @@
 package top.jackhack.glang.elements;
 
+import top.jackhack.glang.Utils;
+
 import java.util.ArrayList;
 
-public class Times extends Operator {
+public class Parentheses extends Brackets {
     @Override
     public int tryMatch(ArrayList<Element> elements, int index) {
-        return super.tryMatch(elements, index);
+
+        return matchBrakets(elements, index, "(", ")");
     }
+
 }
